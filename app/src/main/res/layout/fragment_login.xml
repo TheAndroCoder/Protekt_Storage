@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginFragment">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="30dp"
+        android:layout_below="@id/toolbar"
+        tools:ignore="NotSibling">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/username_edittext"
+            android:background="@drawable/rounded_et"
+            android:hint="Username"
+            android:paddingLeft="10dp"
+            />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/password_edittext"
+            android:layout_below="@id/username_edittext"
+            android:background="@drawable/rounded_et"
+            android:hint="Password"
+            android:paddingLeft="10dp"
+            android:layout_marginTop="10dp"/>
+        <Button
+            android:id="@+id/login_btn"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@id/password_edittext"
+            android:layout_marginTop="10dp"
+            android:text="LOGIN"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            />
+        <Button
+            android:id="@+id/register_btn"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@id/login_btn"
+            android:layout_marginTop="10dp"
+            android:text="Register"
+            android:backgroundTint="#f1f1f1"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="Made by TheAndroCoder :)"
+            android:textColor="@color/black"
+            android:textAlignment="center"/>
+    </RelativeLayout>
+
+</RelativeLayout>
