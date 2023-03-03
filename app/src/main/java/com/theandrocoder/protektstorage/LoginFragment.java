@@ -59,18 +59,21 @@ public class LoginFragment extends Fragment {
         ButterKnife.bind(this,inflate);
         mAuth=FirebaseAuth.getInstance();
         loginBtn.setOnClickListener(v->{
-            // TODO : validate email and password before sending request
-            if(Utils.validateEmail(emailEditText.getText().toString()))
-            mAuth.signInWithEmailAndPassword(emailEditText.getText().toString(),passwordEditText.getText().toString())
-                    .addOnCompleteListener(getActivity(),task->{
-                        if(task.isSuccessful()){
-                            Log.d(TAG,"SignIn Success");
-                            listener.authenticated();
-                        }else{
-                            Log.d(TAG,"Sign In Failed "+task.getException().getMessage());
-                            Toast.makeText(getContext(), "Sign In Failed "+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
+
+            if(Utils.validateEmailAndPass(emailEditText.getText().toString(),passwordEditText.getText().toString())) {
+                mAuth.signInWithEmailAndPassword(emailEditText.getText().toString(), passwordEditText.getText().toString())
+                        .addOnCompleteListener(getActivity(), task -> {
+                            if (task.isSuccessful()) {
+                                Log.d(TAG, "SignIn Success");
+                                listener.authenticated();
+                            } else {
+                                Log.d(TAG, "Sign In Failed " + task.getException().getMessage());
+                                Toast.makeText(getContext(), "Sign In Failed " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }else{
+                Toast.makeText(getContext(), "Invalid Inputs", Toast.LENGTH_SHORT).show();
+            }
         });
         return inflate;
     }

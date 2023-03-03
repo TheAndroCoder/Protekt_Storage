@@ -26,10 +26,10 @@
             android:id="@+id/username_edittext"
             android:background="@drawable/rounded_et"
             android:layout_below="@id/email_edittext"
-            android:hint="Username"
+            android:hint="Full Name"
             android:paddingLeft="10dp"
             />
-        <TextView
+       <!-- <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/username_tv"
@@ -38,13 +38,13 @@
             android:gravity="center"
             android:drawableLeft="@drawable/ic_baseline_info_24"
             android:layout_below="@id/username_edittext"
-            android:text="should not contain spaces or special characters"/>
+            android:text="should not contain spaces or special characters"/> -->
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:id="@+id/password_edittext"
-            android:layout_below="@id/username_tv"
+            android:layout_below="@id/username_edittext"
             android:background="@drawable/rounded_et"
             android:hint="Password"
             android:paddingLeft="10dp"

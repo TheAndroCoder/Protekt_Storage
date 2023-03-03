@@ -14,9 +14,9 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
-            android:id="@+id/username_edittext"
+            android:id="@+id/email_edittext"
             android:background="@drawable/rounded_et"
-            android:hint="Username"
+            android:hint="Email"
             android:paddingLeft="10dp"
             />
 
@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:id="@+id/password_edittext"
-            android:layout_below="@id/username_edittext"
+            android:layout_below="@id/email_edittext"
             android:background="@drawable/rounded_et"
             android:hint="Password"
             android:paddingLeft="10dp"

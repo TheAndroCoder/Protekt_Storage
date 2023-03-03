@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.theandrocoder.protektstorage.listeners.ViewPagerClickListener;
+import com.theandrocoder.protektstorage.utils.Utils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -60,20 +61,24 @@ public class RegisterFragment extends Fragment {
 
         mAuth=FirebaseAuth.getInstance();
         registerBtn.setOnClickListener(v->{
-            // TODO : validate email, password and username before sending request
-            mAuth.createUserWithEmailAndPassword(emailEditText.getText().toString(),passwordEditText.getText().toString())
-                    .addOnCompleteListener(getActivity(),task->{
-                        if(task.isSuccessful()){
-                            Log.d(TAG,"Created User");
-                            // take username and put a UserProfileUpdateRequest
-                            UserProfileChangeRequest req=new UserProfileChangeRequest.Builder().setDisplayName(usernameEditText.getText().toString()).build();
-                            mAuth.getCurrentUser().updateProfile(req);
-                            listener.authenticated();
-                        }else{
-                            Log.e(TAG,"Failed to register "+task.getException().getMessage());
-                            Toast.makeText(getContext(),"Failed to register "+task.getException().getMessage(),Toast.LENGTH_SHORT).show();
-                        }
-                    });
+
+            if(Utils.validateEmailPassUser(emailEditText.getText().toString(),passwordEditText.getText().toString(),usernameEditText.getText().toString())) {
+                mAuth.createUserWithEmailAndPassword(emailEditText.getText().toString(), passwordEditText.getText().toString())
+                        .addOnCompleteListener(getActivity(), task -> {
+                            if (task.isSuccessful()) {
+                                Log.d(TAG, "Created User");
+                                // take username and put a UserProfileUpdateRequest
+                                UserProfileChangeRequest req = new UserProfileChangeRequest.Builder().setDisplayName(usernameEditText.getText().toString()).build();
+                                mAuth.getCurrentUser().updateProfile(req);
+                                listener.authenticated();
+                            } else {
+                                Log.e(TAG, "Failed to register " + task.getException().getMessage());
+                                Toast.makeText(getContext(), "Failed to register " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }else{
+                Toast.makeText(getContext(), "Invalid Inputs", Toast.LENGTH_SHORT).show();
+            }
         });
 
 
