@@ -7,15 +7,24 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.animation.TimeInterpolator;
+import android.animation.ValueAnimator;
+import android.app.ActionBar;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.squareup.picasso.Picasso;
 import com.theandrocoder.protektstorage.adapters.RecentsRecyclerAdapter;
 
 import java.util.ArrayList;
@@ -34,8 +43,16 @@ public class HomeActivity extends AppCompatActivity {
     @BindView(R.id.recents_recycler)
     RecyclerView recentsRecycler;
 
-    private RecentsRecyclerAdapter recentsRecyclerAdapter;
+    @BindView(R.id.menu_icon)
+    ImageView menuIcon;
 
+    private RecentsRecyclerAdapter recentsRecyclerAdapter;
+    @BindView(R.id.sliding_menu)
+    FrameLayout slidingMenuLayout;
+
+    @BindView(R.id.closeMenuBtn) ImageView closeMenuBtn;
+
+    private int marginLeft;
 
 
     @Override
@@ -43,17 +60,48 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
-        Log.d(TAG,"Hello");
+
         // TODO : handle user rejection of permission
         if(ContextCompat.checkSelfPermission(this,Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED)
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},1001);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},1001);
         List<Uri> recentImageList=fetchRecentImages();
         recentImageList=recentImageList.stream().limit(10).collect(Collectors.toList());
         recentsRecyclerAdapter=new RecentsRecyclerAdapter(this,recentImageList);
         recentsRecycler.setLayoutManager(new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false));
         recentsRecycler.setAdapter(recentsRecyclerAdapter);
 
+        // set Params of Sliding menu
+        RelativeLayout.LayoutParams params=(RelativeLayout.LayoutParams) slidingMenuLayout.getLayoutParams();
+        DisplayMetrics metrics=new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        params.width=(int)(0.7*metrics.widthPixels);
+        params.leftMargin=-params.width;
+        marginLeft=-params.width;
+        slidingMenuLayout.setLayoutParams(params);
+        Log.d(TAG,"Left Margin is "+params.leftMargin);
 
+        menuIcon.setOnClickListener(v->{
+            // slide the frame layout outside
+
+            ValueAnimator animator=ValueAnimator.ofInt(params.leftMargin,0);
+            animator.setDuration(300);
+            animator.addUpdateListener(anim->{
+                params.setMargins((int)anim.getAnimatedValue(),0,0,0);
+                slidingMenuLayout.setLayoutParams(params);
+            });
+            animator.start();
+
+        });
+
+        closeMenuBtn.setOnClickListener(v->{
+            ValueAnimator animator=ValueAnimator.ofInt(0,marginLeft);
+            animator.setDuration(300);
+            animator.addUpdateListener(anim->{
+                params.setMargins((int)anim.getAnimatedValue(),0,0,0);
+                slidingMenuLayout.setLayoutParams(params);
+            });
+            animator.start();
+        });
 
     }
 
